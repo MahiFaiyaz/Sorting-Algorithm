@@ -14,20 +14,20 @@ import "./SortingVisualizer.css";
 
 const useStyles = makeStyles({
   arraySizeSlider: {
-    height: 400,
+    height: window.innerHeight / 2,
     position: "absolute",
     left: 25,
-    bottom: 350,
+    bottom: 150,
   },
   animationSpeedSlider: {
-    height: 400,
+    height: window.innerHeight / 2,
     position: "absolute",
     right: 25,
-    bottom: 350,
+    bottom: 150,
   },
   Buttons: {
-    position: "absolute",
-    left: 10,
+    position: "relative",
+    bottom: -25,
   },
 });
 
@@ -63,7 +63,7 @@ const SortingVisualizer = () => {
   const reset2 = (arraySize) => {
     const numbers = [];
     for (let i = 0; i < arraySize; i++) {
-      numbers.push(randomIntFromInterval(5, window.innerHeight - 200));
+      numbers.push(randomIntFromInterval(5, window.innerHeight - 250));
     }
     setArray(numbers);
   };
@@ -151,7 +151,7 @@ const SortingVisualizer = () => {
         </Typography>
         <Slider
           step={10}
-          min={50}
+          min={10}
           max={Math.floor(MAX_ARRAY_SIZE / 10) * 10}
           disabled={allDisabled}
           orientation="vertical"
@@ -178,17 +178,6 @@ const SortingVisualizer = () => {
       </div>
       <div>
         <div>
-          <Button
-            className={classes.Buttons}
-            variant="contained"
-            color="primary"
-            disableElevation
-            startIcon={<Icon>autorenew</Icon>}
-            disabled={onlyGenerateEnabled}
-            onClick={() => resetArray(arraySize)}
-          >
-            Generate New Array
-          </Button>
           <ButtonGroup
             classname={classes.ButtonGroup}
             disableRipple={true}
@@ -217,7 +206,17 @@ const SortingVisualizer = () => {
         </div>
       </div>
       <div class="wrap">
-        <p></p>
+        <Button
+          className={classes.Buttons}
+          variant="contained"
+          color="primary"
+          disableElevation
+          startIcon={<Icon>autorenew</Icon>}
+          disabled={onlyGenerateEnabled}
+          onClick={() => resetArray(arraySize)}
+        >
+          Generate New Array
+        </Button>
       </div>
     </>
   );

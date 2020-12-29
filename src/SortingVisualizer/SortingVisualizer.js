@@ -4,11 +4,14 @@ import getInsertionSortAnimations from "../SortingAlgorithms/InsertionSort";
 import getBubbleSortAnimations from "../SortingAlgorithms/BubbleSort";
 import {
   Button,
+  IconButton,
   ButtonGroup,
   Typography,
   Slider,
   Icon,
+  Popover,
 } from "@material-ui/core";
+import InfoIcon from "@material-ui/icons/Info";
 import { makeStyles } from "@material-ui/core/styles";
 import "./SortingVisualizer.css";
 
@@ -27,7 +30,12 @@ const useStyles = makeStyles({
   },
   Buttons: {
     position: "relative",
-    bottom: -25,
+    height: 80,
+    bottom: 0,
+    padding: 0,
+  },
+  infoButton: {
+    position: "relative",
   },
 });
 
@@ -143,6 +151,17 @@ const SortingVisualizer = () => {
     setAnimationSpeed(5 - newValue);
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <>
       <div className={classes.arraySizeSlider}>
@@ -150,15 +169,14 @@ const SortingVisualizer = () => {
           Size
         </Typography>
         <Slider
-          step={10}
+          step={2}
           min={10}
-          max={Math.floor(MAX_ARRAY_SIZE / 10) * 10}
+          max={MAX_ARRAY_SIZE}
           disabled={allDisabled}
           orientation="vertical"
           onChange={handleChangeArraySize}
           defaultValue={arraySize}
           aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
         />
       </div>
       <div className={classes.animationSpeedSlider}>
@@ -178,6 +196,38 @@ const SortingVisualizer = () => {
       </div>
       <div>
         <div>
+          <IconButton
+            disabled={onlyGenerateEnabled}
+            className="infoButton"
+            color="primary"
+            onClick={handleClick}
+          >
+            <InfoIcon />
+          </IconButton>
+          <Popover
+            disabled={allDisabled}
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <Typography className={classes.typography}>
+              <strong>Insertion Sort:</strong> Takes each element and moves it
+              into the correct position one at a time <br /> <br />
+              <strong>Bubble Sort:</strong> Compares adjacent elements and swaps
+              them if they are in the wrong order <br /> <br />
+              <strong>Merge Sort:</strong> Divides into subarrays, sorts each
+              array and merges them back together
+            </Typography>
+          </Popover>
           <ButtonGroup
             classname={classes.ButtonGroup}
             disableRipple={true}
@@ -211,6 +261,7 @@ const SortingVisualizer = () => {
           variant="contained"
           color="primary"
           disableElevation
+          fullWidth="true"
           startIcon={<Icon>autorenew</Icon>}
           disabled={onlyGenerateEnabled}
           onClick={() => resetArray(arraySize)}
